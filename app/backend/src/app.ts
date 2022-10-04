@@ -1,8 +1,8 @@
 import * as express from 'express';
+import LoginRoutes from './routes/login.routes';
 
 class App {
   public app: express.Express;
-
   constructor() {
     this.app = express();
 
@@ -22,6 +22,7 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use(LoginRoutes);
   }
 
   public start(PORT: string | number):void {
