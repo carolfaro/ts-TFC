@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 // import HttpException from '../shared/http.exception';
 
-class loginValidationMiddleware {
-  static async authLogin(req: Request, res: Response, next: NextFunction) {
+class LoginValidationMiddleware {
+  static async verifyEmptyFields(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -13,4 +13,4 @@ class loginValidationMiddleware {
   }
 }
 
-export default loginValidationMiddleware;
+export default LoginValidationMiddleware;

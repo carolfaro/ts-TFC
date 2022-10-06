@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import AuthController from '../controllers/auth.controller';
-import loginValidationMiddleware from '../middleware/login.Validation.Middleware';
+import LoginValidationMiddleware from '../middleware/login.Validation.Middleware';
 
 const router = Router();
 
-router.post('/login', loginValidationMiddleware.authLogin, AuthController.authLogin);
+router.post('/login', LoginValidationMiddleware.verifyEmptyFields, AuthController.authLogin);
 
 export default router;
