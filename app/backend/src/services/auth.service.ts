@@ -19,7 +19,7 @@ class AuthService {
       throw new HttpException(401, 'Incorrect email or password');
     }
 
-    const token: string = jwt.sign({ userId: findUser.id }, 'segredo', { expiresIn: '365d' });
+    const token: string = jwt.sign({ userId: findUser.id }, 'jwt_secret', { expiresIn: '365d' });
 
     return { token };
   }
