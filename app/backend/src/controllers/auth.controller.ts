@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import AuthService from '../services/auth.service';
-import LoginDto from './dto/LoginDto';
 
-export default class AuthController {
-  constructor(private authService = new AuthService()) {}
+class AuthController {
+  static async authLogin(req: Request, res: Response) : Promise<Response> {
+    const { email, password } = req.body;
+    const token = await AuthService.authLogin(email, password);
 
-  public async auth(req: Request< unknown, unknown, LoginDto>, res: Response) {
-    const token = await this.authService.authentication(req.body);
-    res.status(200).json(token);
+    return res.status(200).json(token);
   }
 }
+
+export default AuthController;

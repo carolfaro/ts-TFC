@@ -1,16 +1,28 @@
-import HttpException from 'src/shared/http.exception';
-import LoginDto from '../controllers/dto/LoginDto';
-import TokenGenerate from '';
-import sequelize from '../database/models';
+import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import HttpException from '../shared/http.exception';
+import UserModel from '../database/models/User';
+import IUser from '../entities/IUser';
+import IToken from '../entities/IToken';
 
-export default class AuthService {
-  public async authentication(loginDto: LoginDto) {
-    if (!loginDto.user || !loginDto.password) {
-      throw { status: 401, message: 'Campos faltantes.' };
+class AuthService {
+  static async authLogin(email: string, password: string): Promise<IToken> {
+    const findUser = await UserModel.findOne({ where: { email } }) as IUser;
+
+    if (!findUser) {
+      throw new HttpException(401, 'Incorrect email or password');
     }
 
-    const userValidate = await sequelize.models.User.findOne({
+    const comparePassword = bcrypt.compareSync(password, findUser.password);
 
-    });
+    if (!comparePassword) {
+      throw new HttpException(401, 'Incorrect email or password');
+    }
+
+    const token: string = jwt.sign({ userId: findUser.id }, 'segredo', { expiresIn: '365d' });
+
+    return { token };
   }
 }
+
+export default AuthService;
