@@ -1,13 +1,20 @@
-// import HttpException from '../shared/http.exception';
-// import ITeams from '../entities/ITeams';
-// import IToken from '../entities/IToken';
-// import ITokenRole from '../entities/ITokenRole';
 import Team from '../database/models/Team';
+import ITeams from '../entities/ITeams';
 
 class TeamService {
   static async getAllTeams(): Promise<object> {
     const allTeams = await Team.findAll();
     return allTeams;
+  }
+
+  static async getOneTeam(id: number): Promise<object> {
+    const oneTeam = await Team.findOne({
+      where: { id },
+      attributes: { exclude: ['password'] },
+      raw: true,
+    });
+
+    return oneTeam as ITeams;
   }
 }
 
