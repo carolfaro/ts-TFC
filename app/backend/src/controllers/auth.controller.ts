@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import AuthService from '../services/auth.service';
-// import IToken from '../entities/IToken';
 
 class AuthController {
   static async authLogin(req: Request, res: Response) : Promise<Response> {
