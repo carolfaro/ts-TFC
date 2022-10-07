@@ -37,6 +37,8 @@ describe('Testes de integração - Seção 2: Teams', () => {
         expect(chaiHttpResponse).to.have.status(200);
         expect(chaiHttpResponse).to.be.json;
         expect(chaiHttpResponse.body).to.have.property('teamName');
+        expect(chaiHttpResponse.body).to.be.an('array');
+        expect(chaiHttpResponse.body[0]).to.have.property('teamName');
     });
     // });
   

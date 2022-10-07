@@ -11,21 +11,35 @@ chai.use(chaiHttp);
 
 const {expect} = chai;
 
+
 describe('Testes de integração - Seção 1: Login', () => {
    
     let chaiHttpResponse: Response;
-    it('Endpoint /login- o avaliador verificará que é possível realizar um login com sucesso', async () => {
+    it('Endpoint POST/login- o avaliador verificará que é possível realizar um login com sucesso', async () => {
         chaiHttpResponse = await chai.request(app).post('/login').send({ 
-            user:"xxxx", 
-            password:"yyyyy" 
+            email:"admin@admin.com", 
+            password:"$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW" 
         });
         expect(chaiHttpResponse).to.have.status(200);
         expect(chaiHttpResponse).to.be.json;
         expect(chaiHttpResponse.body).to.have.property('token');
     });
-    // });
-  
-    // it('Seu sub-teste', () => {
-    //   expect(false).to.be.eq(true);
-    // });
+    it('Endpoint POST/login- o avaliador verificará que retorna mensagem de erro ao receber email inválido', async () => {
+        chaiHttpResponse = await chai.request(app).post('/login').send({ 
+            email:"admi@admin.com", 
+            password:"yyyyy" 
+        });
+        expect(chaiHttpResponse.status).to.be.equal(401);
+        expect(chaiHttpResponse).to.be.json;
+        expect(chaiHttpResponse.body).to.have.property('message');
+    });
+    it('Endpoint POST/login- o avaliador verificará que retorna mensagem de erro ao receber senha inválida', async () => {
+        chaiHttpResponse = await chai.request(app).post('/login').send({ 
+            email:"admin@admin.com", 
+            password:"yyyyy" 
+        });
+        expect(chaiHttpResponse.status).to.be.equal(401);
+        expect(chaiHttpResponse).to.be.json;
+        expect(chaiHttpResponse.body).to.have.property('message');
+    });
   });
