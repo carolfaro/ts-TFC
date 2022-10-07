@@ -1,9 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import * as jwt from 'jsonwebtoken';
-import User from 'src/database/models/User';
 import HttpException from '../shared/http.exception';
-import IToken from '../entities/IToken';
-import IUser from '../entities/IUser';
 
 class LoginValidationMiddleware {
   static async verifyEmptyFields(req: Request, res: Response, next: NextFunction) {
