@@ -2,6 +2,7 @@ import * as express from 'express';
 import 'express-async-errors';
 import LoginRoutes from './routes/login.routes';
 import TeamRoutes from './routes/team.routes';
+import MatchesRoutes from './routes/matches.routes';
 import errorMiddleware from './middleware/http.error.middleware';
 
 class App {
@@ -13,9 +14,6 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.use(LoginRoutes);
-    this.app.use(TeamRoutes);
-    this.app.use(errorMiddleware);
   }
 
   private config():void {
@@ -28,6 +26,10 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use(LoginRoutes);
+    this.app.use(TeamRoutes);
+    this.app.use(MatchesRoutes);
+    this.app.use(errorMiddleware);
   }
 
   public start(PORT: string | number):void {
