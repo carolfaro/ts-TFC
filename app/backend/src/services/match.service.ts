@@ -47,6 +47,15 @@ class MatchesService {
     }
     return newMatch as Match;
   }
+
+  static async updateStatusMatch(id: string): Promise<number> {
+    const [findMatch] = await Match.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+
+    return findMatch;
+  }
 }
 
 export default MatchesService;

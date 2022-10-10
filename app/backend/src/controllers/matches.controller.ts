@@ -18,6 +18,15 @@ class MatchesController {
       .addMatch(req.body);
     return res.status(201).json(newMatch);
   }
+
+  static async updateStatusMatch(req: Request, res: Response) : Promise<Response> {
+    const { id } = req.params;
+    const changeStatus = await MatchesService.updateStatusMatch(id);
+    if (changeStatus === 1) {
+      return res.status(200).json('Finished');
+    }
+    return res.status(500).json('deu ruim');
+  }
 }
 
 export default MatchesController;
