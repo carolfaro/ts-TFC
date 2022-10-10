@@ -8,8 +8,8 @@ const router = Router();
 router.post(
   '/matches',
   LoginValidationMiddleware.validateToken,
-  // NewMatchValidation.matchValidation,
   NewMatchValidation.newMatchValidation,
+  NewMatchValidation.validationExistingTeam,
   MatchesController.addMatch,
 ).get(
   '/matches',
