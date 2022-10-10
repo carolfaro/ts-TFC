@@ -12,7 +12,6 @@ class LoginValidationMiddleware {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      // return res.status(400).json({ message: 'All fields must be filled' });
       throw new HttpException(400, 'All fields must be filled');
     }
 
@@ -35,20 +34,19 @@ class LoginValidationMiddleware {
   }
 
   static async validateToken(req: Request, res: Response, next: NextFunction) {
-    const { authorization } = req.headers;
+    try {
+      const { authorization } = req.headers;
+      const token = jwt.verify(authorization as string, 'jwt_secret') as ITokenRole;
+      const { userId } = token;
+      const user = await User.findByPk(userId);
+      if (!user) {
+        throw new HttpException(401, 'Token must be a valid token');
+      }
 
-    if (!authorization) {
-      throw new HttpException(400, errorToken);
-    }
-
-    const token = jwt.verify(authorization, 'jwt_secret') as ITokenRole;
-    const { userId } = token;
-    const user = await User.findByPk(userId);
-    if (!user) {
+      next();
+    } catch (err) {
       throw new HttpException(401, 'Token must be a valid token');
     }
-
-    next();
   }
 }
 
