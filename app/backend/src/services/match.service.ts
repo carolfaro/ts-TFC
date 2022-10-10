@@ -56,6 +56,15 @@ class MatchesService {
 
     return findMatch;
   }
+
+  static async updateMatchInProgress(id: string, homeTeamGoals: string, awayTeamGoals: string) {
+    const [findMatch] = await Match.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id } },
+    );
+
+    return findMatch;
+  }
 }
 
 export default MatchesService;

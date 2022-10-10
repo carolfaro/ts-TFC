@@ -27,6 +27,13 @@ class MatchesController {
     }
     return res.status(500).json('deu ruim');
   }
+
+  static async updateMatchInProgress(req: Request, res: Response) : Promise<Response> {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    await MatchesService.updateMatchInProgress(id, homeTeamGoals, awayTeamGoals);
+    return res.status(200).json('opa');
+  }
 }
 
 export default MatchesController;

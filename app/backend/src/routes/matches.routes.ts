@@ -5,15 +5,18 @@ import NewMatchValidation from '../middleware/new.match.validation.middleware';
 
 const router = Router();
 
-router.post(
-  '/matches',
-  LoginValidationMiddleware.validateToken,
-  NewMatchValidation.newMatchValidation,
-  NewMatchValidation.validationExistingTeam,
-  MatchesController.addMatch,
-).get(
-  '/matches',
-  MatchesController.getAllMatchesOrByProgress,
-).patch('/matches/:id/finish', MatchesController.updateStatusMatch);
+router
+  .patch('/matches/:id', MatchesController.updateMatchInProgress)
+  . patch('/matches/:id/finish', MatchesController.updateStatusMatch)
+  . post(
+    '/matches',
+    LoginValidationMiddleware.validateToken,
+    NewMatchValidation.newMatchValidation,
+    NewMatchValidation.validationExistingTeam,
+    MatchesController.addMatch,
+  ).get(
+    '/matches',
+    MatchesController.getAllMatchesOrByProgress,
+  );
 
 export default router;
