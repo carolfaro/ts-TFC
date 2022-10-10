@@ -1,10 +1,12 @@
-import Matches from '../database/models/Matches';
-import IMatches from '../entities/IMatches';
+import Match from '../database/models/Matches';
+// import IMatches from '../entities/IMatches';
 import Team from '../database/models/Team';
+import INewMatches from '../entities/INewMatches';
+import HttpException from '../shared/http.exception';
 
 class MatchesService {
-  static async getAllMatches(): Promise<IMatches[]> {
-    const allTeams = await Matches.findAll({
+  static async getAllMatches(): Promise<Match[]> {
+    const allTeams = await Match.findAll({
       include: [{
         model: Team,
         as: 'teamHome',
@@ -15,12 +17,12 @@ class MatchesService {
         attributes: { exclude: ['id'] },
       }],
     });
-    return allTeams as IMatches[];
+    return allTeams;
   }
 
-  static async getMatchesByProgress(inProgress: boolean): Promise<IMatches[]> {
-    const teamsByProgress = await Matches.findAll({
-      where: { inProgress },
+  static async getMatchesByProgress(progress: boolean): Promise<Match[]> {
+    const teamsByProgress: Match[] = await Match.findAll({
+      where: { inProgress: progress },
       include: [{
         model: Team,
         as: 'teamHome',
@@ -31,7 +33,19 @@ class MatchesService {
         attributes: { exclude: ['id'] },
       }],
     });
-    return teamsByProgress as IMatches[];
+
+    if (!teamsByProgress) {
+      throw new HttpException(500, 'errou');
+    }
+    return teamsByProgress;
+  }
+
+  static async addMatch(matches: INewMatches): Promise<Match> {
+    const newMatch = await Match.create({ ...matches, inProgress: true });
+    if (!newMatch) {
+      throw new HttpException(500, 'errou');
+    }
+    return newMatch as Match;
   }
 }
 

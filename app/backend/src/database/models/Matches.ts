@@ -1,8 +1,8 @@
-import { Model, INTEGER, BOOLEAN } from 'sequelize';
+import { Model, INTEGER } from 'sequelize';
 import database from '.';
 import Team from './Team';
 
-export default class Matches extends Model {
+export default class Match extends Model {
   id!: number;
   homeTeam!: number;
   homeTeamGoals!:number;
@@ -11,12 +11,11 @@ export default class Matches extends Model {
   inProgress!:boolean;
 }
 
-Matches.init({
+Match.init({
   id: {
     type: INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    allowNull: false,
   },
   homeTeam: {
     type: INTEGER,
@@ -27,6 +26,7 @@ Matches.init({
     type: INTEGER,
     field: 'home_team_goals',
     allowNull: false,
+    unique: true,
   },
   awayTeam: {
     type: INTEGER,
@@ -39,24 +39,24 @@ Matches.init({
     allowNull: false,
   },
   inProgress: {
-    type: BOOLEAN,
+    type: INTEGER,
     allowNull: false,
     field: 'in_progress',
   },
 }, {
   underscored: true,
   sequelize: database,
-  tableName: 'matches',
-  modelName: 'Matches',
+  modelName: 'matches',
   timestamps: false,
 });
 
-// Matches.belongsTo(Team, { foreignKey: 'home_team', as: 'teams' });
-// Matches.belongsTo(Team, { foreignKey: 'away_team', as: 'teams' });
-// Team.hasMany(Matches, { foreignKey: 'home_team', as: 'homeTeam' });
-// Team.hasMany(Matches, { foreignKey: 'away_team', as: 'awayTeam' });
+Match.belongsTo(Team, { foreignKey: 'homeTeam', as: 'teamHome' });
+Match.belongsTo(Team, { foreignKey: 'awayTeam', as: 'teamAway' });
 
-Matches.belongsTo(Team, { foreignKey: 'homeTeam', as: 'teamHome' });
-Matches.belongsTo(Team, { foreignKey: 'awayTeam', as: 'teamAway' });
+Team.hasMany(Match, { foreignKey: 'homeTeam', as: 'homeMatches' });
+Team.hasMany(Match, { foreignKey: 'awayTeam', as: 'awayMatches' });
 
-Team.hasMany(Matches, { foreignKey: 'id', as: 'matches' });
+// Matches.belongsTo(Team, { foreignKey: 'homeTeam', as: 'teamHome' });
+// Matches.belongsTo(Team, { foreignKey: 'awayTeam', as: 'teamAway' });
+
+// Team.hasMany(Matches, { foreignKey: 'id', as: 'matches' });

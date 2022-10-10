@@ -12,6 +12,12 @@ class MatchesController {
     const matchByProgress = await MatchesService.getMatchesByProgress(query);
     return res.status(201).json(matchByProgress);
   }
+
+  static async addMatch(req: Request, res: Response) : Promise<Response> {
+    const newMatch = await MatchesService
+      .addMatch(req.body);
+    return res.status(201).json(newMatch);
+  }
 }
 
 export default MatchesController;
