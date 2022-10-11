@@ -3,6 +3,7 @@ import 'express-async-errors';
 import LoginRoutes from './routes/login.routes';
 import TeamRoutes from './routes/team.routes';
 import MatchesRoutes from './routes/matches.routes';
+import LeaderboardRoutes from './routes/leaderboard.home.routes';
 import errorMiddleware from './middleware/http.error.middleware';
 
 class App {
@@ -29,6 +30,7 @@ class App {
     this.app.use(MatchesRoutes);
     this.app.use(LoginRoutes);
     this.app.use(TeamRoutes);
+    this.app.use(LeaderboardRoutes);
     this.app.use(errorMiddleware);
   }
 

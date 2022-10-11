@@ -1,5 +1,3 @@
-// import ITeams from './ITeams';
-
 interface IMatches {
   id: number;
   homeTeam: number;
